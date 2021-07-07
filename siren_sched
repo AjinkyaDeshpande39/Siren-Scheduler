@@ -1,0 +1,81 @@
+
+;<Program title>
+
+jmp start
+
+;data
+
+
+;code
+start: nop
+
+SIM 08H  	...RST 7.5,6.5 unmasked.
+//Setting up CTR0,CTR1,CTR2,CTR0,Pa,Pb
+MVI A, 36H
+OUT FFH
+MVI A, 56H
+OUT FFH
+MVI A B4H
+OUT FFH
+MVI A, 88H
+OUT EFH
+MVI A 32H
+OUT DFH
+MVI A, 00H
+OUT ECH
+
+
+//counter for 9hrs
+MVI A, 09H
+STA 4000H
+
+
+//Setting up ccounts for counters
+MVI A 10H
+OUT FCH
+MVI A, 27H
+OUT FCH
+MVI A, 14H
+OUT FDH
+MVI A, A0H
+OUT FEH
+MVI A, 8CH
+OUT FEH
+
+
+//RST6.5 subroutine
+EI
+MVI A 00H
+OUT DDH
+MVI A FFH
+OUT DDH
+MVI A 00H
+
+MVI A 2CH
+OUT DCH
+MVI A 01H
+OUT DCH
+MVI A 00H
+OUT EDH
+MVI A FFH
+OUT EDH
+MVI A 00H
+OUT EDH
+MVI A FFH
+OUT ECH
+RET
+
+
+
+//RST7.5 subroutine
+EI
+MVI 00H
+OUT ECH
+LDA 4000H
+DCR A
+STA 4000H
+JZ END
+RET
+
+END: HLT
+hlt
